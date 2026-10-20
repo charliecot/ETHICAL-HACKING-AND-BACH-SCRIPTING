@@ -457,6 +457,17 @@ for number in {1..5}; do
 done
 ```
 
+Python	Bash
+len(items)	${#items[@]}
+len(text)	${#text}
+items[0]	${items[0]}
+items.append("x")	items+=("x")
+for item in items:	for item in "${items[@]}"; do ...; done
+range(len(items))	((i=0; i<${#items[@]}; i++))
+print(value)	echo "$value" or printf '%s\n' "$value"
+
+
+
 C-style loop:
 
 ```bash

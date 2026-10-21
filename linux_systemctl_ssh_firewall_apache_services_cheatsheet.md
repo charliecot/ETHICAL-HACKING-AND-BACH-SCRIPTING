@@ -74,7 +74,14 @@ WantedBy=multi-user.target
 ##### to verify for any configuration error , run this command
 sudo systemd-analyze verify /etc/systemd/system/myapp.service
 
-
+#### then reload systemd deamon using this command
+sudo systemctl daemon-reload
+## other useful command
+systemd-analyze time	Shows system startup time
+systemd-analyze blame	Lists services by startup time
+systemd-analyze critical-chain	Shows the critical startup dependency chain
+systemd-analyze verify file.service	Checks a service file for configuration issues
+systemd-analyze security myapp.servic
 ### Check status
 
 ```bash

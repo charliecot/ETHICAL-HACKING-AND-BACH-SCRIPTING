@@ -64,6 +64,12 @@ After=network.target
 ### Run the service as a one-time task
 Type=oneshot
 
+### in case you want to add a timer  to excute task
+[Timer]
+OnCalender=daily
+Persistent=true
+###### under [install] add this
+WantedBy=timers.target
 ### Command to execute
 ExecStart=/bin/bash /home/YOUR_USERNAME/myapp/myapp.sh
 
@@ -76,12 +82,89 @@ sudo systemd-analyze verify /etc/systemd/system/myapp.service
 
 #### then reload systemd deamon using this command
 sudo systemctl daemon-reload
+
+
+
+
 ## other useful command
 systemd-analyze time	Shows system startup time
+# _________________________________________________________
 systemd-analyze blame	Lists services by startup time
+# _________________________________________________________
 systemd-analyze critical-chain	Shows the critical startup dependency chain
+# ________________________________________________________
 systemd-analyze verify file.service	Checks a service file for configuration issues
+# _________________________________________________________
 systemd-analyze security myapp.servic
+
+## _______________________________________ on timer__________________________________________
+
+[Unit]
+# Explains what this timer does.
+Description=Run my Bash task every minute
+
+[Timer]
+# Run the service one minute after the timer is activated,
+# then repeat at one-minute calendar intervals.
+OnCalendar=*-*-* *:*:00
+AccuracySec=1us    # 1 microsecond
+AccuracySec=1ms    # 1 millisecond
+AccuracySec=1s     # 1 second
+AccuracySec=30s    # 30 seconds
+AccuracySec=5min   # 5 minutes
+
+# If a scheduled run was missed while the machine was off,
+# run it after the timer becomes active again.
+Persistent=true
+
+# Tell systemd which service this timer activates.
+Unit=mytask.service
+
+##### Every 5 minutes	OnCalendar=*:0/5
+##### Every hour, at the start	OnCalendar=hourly
+##### Every day at midnight	OnCalendar=daily
+##### Every day at 06:30	OnCalendar=*-*-* 06:30:00
+##### Every Monday at 09:00	OnCalendar=Mon *-*-* 09:00:00
+##### Every Sunday at 23:15	OnCalendar=Sun *-*-* 23:15:00
+
+
+
+
+[Install]
+# Allow the timer to be enabled at boot.
+WantedBy=timers.target
+
+
+
+
+#### to  list timers
+```bash 
+systemctl list-timers
+systemctl list-timers --all
+
+ ```
+NEXT — when the timer should run next.
+
+#
+
+LEFT — time remaining until the next run.
+
+#
+
+LAST — when it last triggered.
+
+#
+
+UNIT — name of the timer.
+
+### dates
+``bash 
+date '+%Y-%m-%d %H:%M:%S'  # Date and time in 24-hour format
+date '+%H:%M:%S'           # Time only
+date -u                    # Current UTC time
+timedatectl                # Time, timezone, and clock synchronization
+` ```
+
 ### Check status
 
 ```bash

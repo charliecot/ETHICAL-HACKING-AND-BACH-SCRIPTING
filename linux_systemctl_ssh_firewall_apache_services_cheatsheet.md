@@ -54,22 +54,25 @@ If it prints `systemd`, systemd is running as the init system. In WSL, systemd s
 ### a. in order to write your own serviecs
 
 [Unit]
-# Description of the service
+### Description of the service
 Description=My Bash Application Service
 
-# Start after the basic network target
+### Start after the basic network target
 After=network.target
 
 [Service]
-# Run the service as a one-time task
+### Run the service as a one-time task
 Type=oneshot
 
-# Command to execute
+### Command to execute
 ExecStart=/bin/bash /home/YOUR_USERNAME/myapp/myapp.sh
 
 [Install]
-# Allow the service to be enabled for normal startup
+### Allow the service to be enabled for normal startup
 WantedBy=multi-user.target
+
+##### to verify for any configuration error , run this command
+sudo systemd-analyze verify /etc/systemd/system/myapp.service
 
 
 ### Check status
